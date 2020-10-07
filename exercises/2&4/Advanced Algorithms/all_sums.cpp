@@ -16,7 +16,7 @@ void print_sum( unsigned int len )
 	printf( "%d\n", addends[ len ] );
 }
 
-void creat_next_sum( unsigned int n, int pos )
+void create_next_sum( unsigned int n, int pos )
 {
 
 	if ( n == 0 )
@@ -32,7 +32,7 @@ void creat_next_sum( unsigned int n, int pos )
 		addends[ pos ] = k;
 		// represent the smaller number as sum, too.
 		if ( addends[ pos ] <= addends[ pos - 1 ] )
-			creat_next_sum( n - k, pos + 1 );
+			create_next_sum( n - k, pos + 1 );
 	}
 }
 
@@ -46,7 +46,7 @@ int main()
 	addends[ 0 ] = n + 1;
 
 	/* run the algorithm */
-	creat_next_sum( n, 1 );
+	create_next_sum( n, 1 );
 
 	return 0;
 }
