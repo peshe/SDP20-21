@@ -19,37 +19,27 @@ public:
     Stack(const Stack& other) = delete;
     const Stack& operator=(const Stack& other) = delete;
     ~Stack() {
-        Node* oldTop = top;
-        while(top != NULL) {
-            oldTop = top;
-            top = top->prev;
-            delete oldTop;
-        }
+        throw("implement");
     }
 
     void push_back(T element) {
-        Node* newTop = new Node(element, top);
-        top = newTop;
+        throw("implement");
     }
 
     void pop_back() {
-        if(empty()) {
-            return;
-        }
-        Node* newTop = top->prev;
-        delete top;
-        top = newTop;
+        throw("implement");
     }
 
     const T& getTop() const {
-        return top->data;
+        throw("implement");
     }
 
     const bool empty() const {
-        return top == NULL;
+        throw("implement");
     }
 
 };
 
 #endif // STACK
+
 
