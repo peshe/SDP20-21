@@ -6,13 +6,13 @@ int main() {
     int sum = 0;
     Stack<int> s;
     for(int i = 1; i< 15+1; ++i) {
-        //s.push_back(i);
+        s.push_back(i);
     }
 
-    //while(!s.empty()) {
-        //sum += s.top();
-        //s.pop_back();
-    //}
+    while(!s.empty()) {
+        sum += s.getTop();
+        s.pop_back();
+    }
 
     cout<< sum<< endl;
 
