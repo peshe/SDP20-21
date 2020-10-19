@@ -5,104 +5,104 @@ namespace dsa
 {
 
 LinkedStack::LinkedStack()
-	: fTop( nullptr )
+    : fTop( nullptr )
 {}
 
 
 LinkedStack::LinkedStack( const LinkedStack & other )
-	: LinkedStack()
+    : LinkedStack()
 {
-	if ( !other.empty() )
-	{
-		fTop	= new Node( other.fTop->fData );
+    if ( !other.empty() )
+    {
+        fTop    = new Node( other.fTop->fData );
 
-		Node*	nextOther	= other.fTop->fNext;
-		Node*	currThis	= fTop;
+        Node*   nextOther   = other.fTop->fNext;
+        Node*   currThis    = fTop;
 
-		while ( nextOther )
-		{
-			currThis->fNext	= new Node( nextOther->fData );
+        while ( nextOther )
+        {
+            currThis->fNext = new Node( nextOther->fData );
 
-			currThis	= currThis->fNext;
-			nextOther	= nextOther->fNext;
-		}
-	}
+            currThis        = currThis->fNext;
+            nextOther       = nextOther->fNext;
+        }
+    }
 }
 
 
 LinkedStack& LinkedStack::operator=( LinkedStack other )
 {
-	this->swap( other );
+    this->swap( other );
 
-	return *this;
+    return *this;
 }
 
 
 LinkedStack::~LinkedStack()
 {
-	Node*	next;
-	while ( !this->empty() )
-	{
-		next	= fTop->fNext;
-		delete	fTop;
-		fTop	= next;
-	}
+    Node*   next;
+    while ( !this->empty() )
+    {
+        next    = fTop->fNext;
+        delete  fTop;
+        fTop    = next;
+    }
 }
 
 
 bool LinkedStack::push( int elem )
 {
-	Node* newNode	= new ( std::nothrow ) Node( elem, fTop );
-	if ( !newNode )
-	{
-		return false;
-	}
+    Node* newNode   = new ( std::nothrow ) Node( elem, fTop );
+    if ( !newNode )
+    {
+        return false;
+    }
 
-	fTop	= newNode;
+    fTop    = newNode;
 
-	return true;
+    return true;
 }
 
 
 bool LinkedStack::pop()
 {
-	if ( this->empty() )
-	{
-		return false;
-	}
-	
-	Node*	next = fTop->fNext;
-	delete	fTop;
-	fTop	= next;
-	
-	return true;
+    if ( this->empty() )
+    {
+        return false;
+    }
+    
+    Node*   next = fTop->fNext;
+    delete  fTop;
+    fTop    = next;
+    
+    return true;
 }
 
 
 int& LinkedStack::top()
 {
-	if ( this->empty() )
-		throw std::out_of_range( "Can't return top of an empty stack!" );
+    if ( this->empty() )
+        throw std::logic_error( "LinkedStack: Can't return top of an empty stack!" );
 
-	return fTop->fData;
+    return fTop->fData;
 }
 
 
 const int& LinkedStack::top() const
 {
-	return static_cast< LinkedStack >( *this ).top();
+    return const_cast< LinkedStack& >( *this ).top();
 }
 
 
 bool LinkedStack::empty() const
 {
-	return fTop == nullptr;
+    return fTop == nullptr;
 }
 
 
 void LinkedStack::swap( LinkedStack& other )
 {
-	std::swap( fTop, other.fTop );
+    std::swap( fTop, other.fTop );
 }
 
-}
+} // end namespace dsa
