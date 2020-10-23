@@ -22,7 +22,7 @@ string infixToPostfix(const string& expr)
             s.push(expr[i]);
         }
         else if (expr[i] == ')') {
-            while (s.size() && s.top() != '(') {
+            while (!s.empty() && s.top() != '(') {
                 postfixNotation.push_back(s.top());
                 s.pop();
             }
@@ -32,14 +32,14 @@ string infixToPostfix(const string& expr)
             postfixNotation.push_back(expr[i]);
         }
         else {
-            while(s.size() && precedence(s.top()) >= precedence(expr[i]) ) {
+            while(!s.empty() && precedence(s.top()) >= precedence(expr[i]) ) {
                 postfixNotation.push_back(s.top());
                 s.pop();
             }
             s.push(expr[i]);
         }
     }
-    while(s.size()) {
+    while(!s.empty()) {
         postfixNotation.push_back(s.top());
         s.pop();
     }
