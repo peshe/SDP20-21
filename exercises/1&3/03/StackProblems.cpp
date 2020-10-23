@@ -13,11 +13,11 @@ int precedence(char c) {
 }
 
 
-std::string infixToPostfix(std::string expr)
+string infixToPostfix(const string& expr)
 {
-    std::string postfixNotation;
-    std::stack<char> s;
-    for (unsigned i = 0, sz = unsigned(expr.size()); i < sz; i++) {
+    string postfixNotation;
+    stack<char> s;
+    for (size_t i = 0, sz = expr.size(); i < sz; i++) {
         if(expr[i] == '(') {
             s.push(expr[i]);
         }
@@ -47,11 +47,11 @@ std::string infixToPostfix(std::string expr)
 }
 
 
-int calculateRPN(std::string expr)
+int calculateRPN(const string& expr)
 {
-    std::string toRPN = infixToPostfix(expr);
+    string toRPN = infixToPostfix(expr);
     stack<int> s;
-    for (unsigned i = 0, sz = unsigned(toRPN.size()); i < sz; i++) {
+    for (size_t i = 0, sz = toRPN.size(); i < sz; i++) {
         if (toRPN[i] >= '0' && toRPN[i] <= '9') {
             s.push(toRPN[i] - '0');
         }
@@ -71,15 +71,14 @@ int calculateRPN(std::string expr)
     return s.top();
 }
 
-bool isPalindrome(std::string word)
+bool isPalindrome(const string& word)
 {
     bool isPali = true;
-    std::stack<char> reverse;
-    for (unsigned i = 0; i < word.size(); i++) {
+    stack<char> reverse;
+    for (size_t i = 0, sz = word.size(); i < sz; i++)
         reverse.push(word[i]);
-    }
 
-    for (unsigned i = 0; i < word.size(); i++) {
+    for (size_t i = 0, sz = word.size(); i < sz; i++) {
         if(reverse.top() != word[i]) {
             isPali = false;
             break;
@@ -89,48 +88,39 @@ bool isPalindrome(std::string word)
     return isPali;
 }
 
-bool isBalanced(string expr)
+
+int checkTable(const string& table, char key)
+{
+    for (size_t i = 0, sz = table.size(); i < sz; i++)
+        if (table[i] == key)
+            return i;
+    return -1;
+}
+
+bool isBalanced(const string& expr)
 {
     stack<char> s;
-    for (unsigned i=0, sz = unsigned(expr.size()); i < sz; i++)
-    {
-        if (expr[i]=='('||expr[i]=='['||expr[i]=='{') {
+
+    const string open("({[");
+    const string close(")}]");
+
+
+    int at  = 0;
+    for (size_t i=0, sz = size_t(expr.size()); i < sz; i++) {
+        if(checkTable(open, expr[i]) >= 0) {
             s.push(expr[i]);
             continue;
         }
-        if (expr[i]==')'||expr[i]==']'||expr[i]=='}') {
-            if (s.empty()) {
-                return false;
-            }
-            else {
-                switch (expr[i]) {
-                case ')':
-                    if (s.top() != '(') {
-                        return false;
-                    }
-                    s.pop();
-                    break;
 
-                case '}':
-                    if (s.top()=='(' || s.top()=='[') {
-                        return false;
-                    }
-                    s.pop();
-                    break;
-
-                case ']':
-                    if (s.top()=='{' || s.top()=='(') {
-                        return false;
-                    }
-                    s.pop();
-                    break;
-                }
-            }
-        }
-
+        if(!s.empty() && (at = checkTable(close, expr[i])) >= 0 && expr[i] == close[at])
+            s.pop();
+        else if(at < 0)
+            continue;
+        else
+            return false;
     }
 
-    return (s.empty());
+    return s.empty();
 }
 
 
@@ -138,10 +128,11 @@ bool isBalanced(string expr)
 int main()
 {
     cout << isPalindrome("aabbaa") << endl;
-    cout << isBalanced("(asd[asd{asdasd}]abb)") << " " << isBalanced("(asd[asd{asdasd}]abb)") << "";
+    cout << isBalanced("(asd[asd{asdasd}a]bb)") << " " << isBalanced("(asd[asd{asdasd}]abb)") << endl;
     cout << infixToPostfix("a+b*c-d*e") << endl;
     cout << infixToPostfix("(a+b)*c") << endl;
     cout << calculateRPN("2*3+4*(5-6)") << endl;
 
     return 0;
 }
+
