@@ -24,6 +24,7 @@ public:
     class Node;
     class iterator
     {
+        friend DoubleLinkedList;
     public:
         typedef iterator                  self_type;
         typedef T                         value_type;
@@ -40,7 +41,7 @@ public:
         {
             return *m_node_ptr;
         }
-        const reference operator*()
+        const reference operator*() const
         {
             return *m_node_ptr;
         }
@@ -63,7 +64,7 @@ public:
         self_type& operator++()
         { // prefix ++
 
-            m_node_ptr = m_node_ptr->next;
+            m_node_ptr = m_node_ptr->pNext;
             return *this;
         }
 
@@ -228,21 +229,10 @@ void DoubleLinkedList<T>::copy( const DoubleLinkedList<T>& other )
 template<class T>
 void DoubleLinkedList<T>::clean()
 {
-    if ( size == 1 )
+    while ( !this->isEmpty() )
     {
-        delete head;
+        this->pop_front();
     }
-    else
-    {
-        while ( head != nullptr )
-        {
-            head = head->pNext;
-            delete head->pPrev;
-        }
-    }
-    head = nullptr;
-    tail = nullptr;
-    size = 0;
 }
 
 template<class T>
@@ -300,6 +290,10 @@ void DoubleLinkedList<T>::push_back( const T& newData )
     {
         head = tail;
     }
+    else
+    {
+        tail->pPrev->pNext = tail;
+    }
     ++size;
 }
 
@@ -326,7 +320,7 @@ void DoubleLinkedList<T>::pop_back()
 }
 
 template<class T>
-DoubleLinkedList<T>::iterator DoubleLinkedList<T>::insert( const iterator& it, const T& newData )
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::insert( const iterator& it, const T& newData )
 {
     if ( it == this->begin() || size < 2 )
     {
@@ -334,24 +328,25 @@ DoubleLinkedList<T>::iterator DoubleLinkedList<T>::insert( const iterator& it, c
         return iterator( head );
     }
 
-    Node*& prev = it.m_note_ptr->pPrev;
+    Node* prev = it.m_node_ptr->pPrev;
 
     Node* newNode = new Node( newData, it.m_node_ptr, prev );
     prev->pNext = newNode;
-    prev = newNode;
+
+    it.m_node_ptr->pPrev = newNode;
 
     ++size;
     return newNode;
 }
 
 template<class T>
-DoubleLinkedList<T>::iterator DoubleLinkedList<T>::remove( const iterator& it )
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::remove( const iterator& it )
 {
     if ( this->isEmpty() )
     {
         throw std::logic_error( "empty double linked list!" );
     }
-    // there is no element after this iterator
+    // there is no element
     if ( it == this->end() )
     {
         return end();
@@ -369,16 +364,20 @@ DoubleLinkedList<T>::iterator DoubleLinkedList<T>::remove( const iterator& it )
         return iterator( tail );
     }
 
-    Node*& prev = it.m_node_ptr->pPrev;
+    Node* prev = it.m_node_ptr->pPrev;
+    Node* next = it.m_node_ptr->pNext;
+
     // link the previous with the next
-    prev->pNext = it.m_node_ptr->pNext;
+    prev->pNext = next;
+
     // link next with the previous
-    it.m_node_ptr->pNext = prev;
+    next->pPrev = prev;
+
     // free the resources for the deleted box
-    Node* res = it.m_node_ptr->pNext;
     delete it.m_node_ptr;
     --size;
-    return iterator( res );
+
+    return next;
 }
 
 }

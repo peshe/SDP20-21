@@ -12,6 +12,9 @@ namespace dsa
 template <class T>
 class ForwardList
 {
+private:
+    struct Node;
+
 public:
     ForwardList();
     ForwardList(std::initializer_list<T> il);
@@ -20,10 +23,9 @@ public:
     ~ForwardList();
 
 public:
-
-    class Node;
     class iterator
     {
+        friend ForwardList;
     public:
         typedef iterator                  self_type;
         typedef T                         value_type;
@@ -35,7 +37,7 @@ public:
     public:
         /* access operators */
         reference operator*() { return *m_node_ptr; }
-        const reference operator*() { return *m_node_ptr; }
+        const reference operator*() const { return *m_node_ptr; }
         pointer operator->() { return m_node_ptr; }
 
         /* compare operators */
@@ -45,7 +47,7 @@ public:
         /* modifier operators */
         self_type& operator++() { // prefix ++
 
-            m_node_ptr = m_node_ptr->next;
+            m_node_ptr = m_node_ptr->pNext;
             return *this;
         }
 
@@ -107,7 +109,7 @@ private:
         Node* pNext;
         T data;
 
-        Node( const T& nextData, Node* nextNode ): data( nextData ), pNext( nextNode ) {}
+        Node( const T& data, Node* nextNode ): data( data ), pNext( nextNode ) {}
     };
 
     Node* head;
@@ -122,7 +124,7 @@ ForwardList<T>::ForwardList(): head( nullptr ), tail( nullptr ), size( 0 ) {}
 template<class T>
 inline ForwardList<T>::ForwardList( std::initializer_list<T> il )
 {
-    for ( std::initializer_list<T>::iterator it = il.end() - 1;
+    for ( typename std::initializer_list<T>::iterator it = il.end() - 1;
         it >= il.begin();
         --it )
     {
@@ -189,17 +191,10 @@ void ForwardList<T>::copy( const ForwardList<T>& other )
 template<class T>
 void ForwardList<T>::clean()
 {
-    Node* destroyer;
-    while ( head != nullptr )
+    while ( !this->isEmpty() )
     {
-        destroyer = head;
-        head = head->pNext;
-        delete destroyer;
+        this->pop_front();
     }
-
-    head = nullptr;
-    tail = nullptr;
-    size = 0;
 }
 
 template<class T>
@@ -243,11 +238,9 @@ void ForwardList<T>::pop_front()
 }
 
 template<class T>
-ForwardList<T>::iterator ForwardList<T>::insertAfter( const iterator& it, const T& newData )
+typename ForwardList<T>::iterator ForwardList<T>::insertAfter( const iterator& it, const T& newData )
 {
-    Node* new_node = new Node( newData );
-
-    new_node->pNext = it.m_node_ptr->pNext;
+    Node* new_node = new Node( newData, it.m_node_ptr->pNext );
 
     it.m_node_ptr->pNext = new_node;
 
@@ -261,7 +254,7 @@ ForwardList<T>::iterator ForwardList<T>::insertAfter( const iterator& it, const 
 }
 
 template<class T>
-ForwardList<T>::iterator ForwardList<T>::removeAfter( const iterator& it )
+typename ForwardList<T>::iterator ForwardList<T>::removeAfter( const iterator& it )
 {
     if ( this->isEmpty() )
     {
