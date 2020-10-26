@@ -355,7 +355,7 @@ typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::remove( const iterat
     if ( it.m_node_ptr == head )
     {
         this->pop_front();
-        return iterator( tail );
+        return iterator( head );
     }
     // last element case
     if ( it.m_node_ptr == tail )
