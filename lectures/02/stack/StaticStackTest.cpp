@@ -134,3 +134,4 @@ TEST(StaticStackTest, TestAssignment)
 
     ASSERT_TRUE(copyBig.isEmpty());
 }
+
