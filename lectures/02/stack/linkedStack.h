@@ -10,6 +10,7 @@
 #ifndef _LINKED_STAC_HEADER_INCLUDED_
 #define _LINKED_STC_HEADER_INCLUDED_
 
+
 namespace fmi {
 namespace sdp {
 

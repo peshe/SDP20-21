@@ -1,5 +1,5 @@
-#include "staticStack.h"
 #include <stdexcept>
+#include "staticStack.h"
 
 namespace fmi {
 namespace sdp {

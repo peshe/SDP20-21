@@ -9,6 +9,9 @@
 
 #ifndef _STATIC_STAC_HEADER_INCLUDED_
 #define _STATIC_STAC_HEADER_INCLUDED_
+
+#include<cstddef>
+
 namespace fmi {
 namespace sdp {
 
