@@ -21,6 +21,38 @@ public:
         }
     }
 
+    class Iterator {
+        Node* current;
+
+    public:
+
+        Iterator(Node* current) : current(current) {}
+
+        bool operator!=(const Iterator& other) const {
+            return current != other.current;
+        }
+
+        Iterator& operator++() {
+            if(current == NULL) {
+                throw "no next element";
+            }
+
+            current = current->next;
+        }
+
+        T operator*() {
+            return current->data;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(head);
+    }
+
+    Iterator end() {
+        return Iterator(NULL);
+    }
+
     void push_back(T element) {
         if(head == NULL) {
             head = new Node(element, NULL);

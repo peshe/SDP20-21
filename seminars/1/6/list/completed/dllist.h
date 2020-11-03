@@ -23,6 +23,38 @@ public:
         }
     }
 
+    class Iterator {
+        Node* current;
+
+    public:
+
+        Iterator(Node* current) : current(current) {}
+
+        bool operator!=(const Iterator& other) const {
+            return current != other.current;
+        }
+
+        Iterator& operator++() {
+            if(current == NULL) {
+                throw "no next element";
+            }
+
+            current = current->next;
+        }
+
+        T operator*() {
+            return current->data;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(head);
+    }
+
+    Iterator end() {
+        return Iterator(NULL);
+    }
+
     void push_back(T element) {
         if(tail == NULL) {
             head = tail = new Node(element, NULL, NULL);
@@ -78,7 +110,9 @@ public:
             }
             insertionNode = insertionNode->next;
         }
-        insertionNode->next = new Node(element, insertionNode, insertionNode->next);
+        Node* newNode = new Node(element, insertionNode, insertionNode->next);
+        insertionNode->next = newNode;
+        newNode->next->prev = newNode;
     }
 
     void remove(int index) {
@@ -90,9 +124,12 @@ public:
             deletionNode = deletionNode->next;
         }
 
+        Node* oldNode = deletionNode->next;
         deletionNode->next = deletionNode->next->next;
-        delete deletionNode->next->prev;
-        deletionNode->next->prev = deletionNode;
+        delete oldNode;
+        if(deletionNode->next != NULL) {
+            deletionNode->next->prev = deletionNode;
+        }
     }
 
     const T& getFront() const {
