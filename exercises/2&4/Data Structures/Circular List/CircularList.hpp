@@ -54,8 +54,9 @@ public:
     };
 
 public:
-    void            push( const T& element);
-    void            pop();
+    void            push_front( const T& element);
+    void            push_back( const T& element);
+    void            pop_front();
 
     iterator        insertAfter( const iterator& it, const T& element);
     iterator        removeAfter( const iterator& it );
@@ -70,9 +71,6 @@ public:
     inline bool     isEmpty()   const   { return size == 0; }
 
     void            print()     const;
-
-    //ForwardList<T>& reverse();
-    //ForwardList<T>& removeDuplicates();
 
 private:
     void copy( const CircularList<T>& other);

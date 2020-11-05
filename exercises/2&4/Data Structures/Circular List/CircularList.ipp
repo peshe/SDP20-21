@@ -78,7 +78,7 @@ void CircularList<T>::clean()
 {
     while ( !this->isEmpty() )
     {
-        this->pop();
+        this->pop_front();
     }
 }
 
@@ -119,52 +119,8 @@ void CircularList<T>::print() const
 }
 
 
-//template<class T>
-//inline ForwardList<T>& ForwardList<T>::reverse()
-//{
-//    tail    = head;
-//
-//    Node*   prev    = nullptr;
-//    Node*   next    = head->pNext;
-//    while ( next )
-//    {
-//        head->pNext = prev;
-//        prev        = head;
-//        head        = next;
-//        next        = next->pNext;
-//    }
-//
-//    head->pNext = prev;
-//
-//    return *this;
-//}
-//
-//
-//template<class T>
-//inline ForwardList<T>& ForwardList<T>::removeDuplicates()
-//{
-//    Node*   curr    = head;
-//    Node*   next    = curr->pNext;
-//
-//    while ( next )
-//    {
-//        if ( curr->data == next->data )
-//        {
-//            next = this->removeAfter( curr );
-//        }
-//        else
-//        {
-//            curr = curr->pNext;
-//            next = next->pNext;
-//        }
-//    }
-//
-//    return *this;
-//}
-
-
 template<class T>
-void CircularList<T>::push( const T& newData )
+void CircularList<T>::push_front( const T& newData )
 {
     head = new Node( newData, head );
     if ( size == 0 )
@@ -178,7 +134,23 @@ void CircularList<T>::push( const T& newData )
 
 
 template<class T>
-void CircularList<T>::pop()
+inline void CircularList<T>::push_back( const T& element )
+{
+    if ( size == 0 )
+    {
+        this->push_front( element );
+    }
+    else
+    {
+        tail->pNext = new Node( element, head );
+        tail        = tail->pNext;
+        ++size;
+    }
+}
+
+
+template<class T>
+void CircularList<T>::pop_front()
 {
     if ( size == 0 )
     {
