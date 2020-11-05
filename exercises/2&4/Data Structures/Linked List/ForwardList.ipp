@@ -8,7 +8,7 @@ template<class T>
 ForwardList<T>::ForwardList() 
     : head( nullptr )
     , tail( nullptr )
-    , size( 0 )
+    , currSize( 0 )
 {}
 
 
@@ -55,7 +55,7 @@ ForwardList<T>::~ForwardList()
 template<class T>
 void ForwardList<T>::copy( const ForwardList<T>& other )
 {
-    if ( other.isEmpty() )
+    if ( other.empty() )
     {
         return;
     }
@@ -72,7 +72,7 @@ void ForwardList<T>::copy( const ForwardList<T>& other )
 
             copied->pNext = new Node( toCopy->data );
             copied = copied->pNext;
-            size++;
+            currSize++;
         }
 
         tail = copied;
@@ -88,7 +88,7 @@ void ForwardList<T>::copy( const ForwardList<T>& other )
 template<class T>
 void ForwardList<T>::clean()
 {
-    while ( !this->isEmpty() )
+    while ( !this->empty() )
     {
         this->pop_front();
     }
@@ -127,30 +127,90 @@ void ForwardList<T>::print() const
 }
 
 
+//template<class T>
+//inline ForwardList<T>& ForwardList<T>::reverse()
+//{
+//    tail    = head;
+//
+//    Node*   prev    = nullptr;
+//    Node*   next    = head->pNext;
+//    while ( next )
+//    {
+//        head->pNext = prev;
+//        prev        = head;
+//        head        = next;
+//        next        = next->pNext;
+//    }
+//
+//    head->pNext = prev;
+//
+//    return *this;
+//}
+//
+//
+//template<class T>
+//inline ForwardList<T>& ForwardList<T>::removeDuplicates()
+//{
+//    Node*   curr    = head;
+//    Node*   next    = curr->pNext;
+//
+//    while ( next )
+//    {
+//        if ( curr->data == next->data )
+//        {
+//            next = this->removeAfter( curr );
+//        }
+//        else
+//        {
+//            curr = curr->pNext;
+//            next = next->pNext;
+//        }
+//    }
+//
+//    return *this;
+//}
+
+
 template<class T>
 void ForwardList<T>::push_front( const T& newData )
 {
     head = new Node( newData, head );
-    if ( size == 0 )
+    if ( currSize == 0 )
     {
         tail = head;
     }
-    ++size;
+    ++currSize;
+}
+
+
+template<class T>
+inline void ForwardList<T>::push_back( const T& element )
+{
+    if ( currSize == 0 )
+    {
+        this->push_front( element );
+    }
+    else
+    {
+        tail->pNext = new Node( element );
+        tail        = tail->pNext;
+        ++currSize;
+    }
 }
 
 
 template<class T>
 void ForwardList<T>::pop_front()
 {
-    if ( size == 0 )
+    if ( currSize == 0 )
     {
         throw std::logic_error( "the list is empty!\n" );
     }
     Node* temp = head;
     head = head->pNext;
     delete temp;
-    --size;
-    if ( size == 0 )
+    --currSize;
+    if ( currSize == 0 )
     {
         tail = nullptr;
     }
@@ -169,7 +229,7 @@ typename ForwardList<T>::iterator ForwardList<T>::insertAfter( const iterator& i
         tail = new_node;
     }
 
-    ++size;
+    ++currSize;
     return new_node;
 }
 
@@ -177,7 +237,7 @@ typename ForwardList<T>::iterator ForwardList<T>::insertAfter( const iterator& i
 template<class T>
 typename ForwardList<T>::iterator ForwardList<T>::removeAfter( const iterator& it )
 {
-    if ( this->isEmpty() )
+    if ( this->empty() )
     {
         throw std::logic_error( "empty forward list!" );
     }
@@ -192,7 +252,7 @@ typename ForwardList<T>::iterator ForwardList<T>::removeAfter( const iterator& i
 
     delete removed;
 
-    --size;
+    --currSize;
     return it.m_node_ptr->pNext;
 }
 

@@ -50,12 +50,18 @@ public:
         self_type operator++( int );    // postfix ++
 
     private:
+        operator        Node*()         { return m_node_ptr; }
+        operator const  Node*() const   { return m_node_ptr; }
+
+    private:
         Node* m_node_ptr;
     };
 
 public:
     void            push_front( const T& element);
+    void            push_back( const T& element);
     void            pop_front();
+    void            pop()   { this->pop_front(); }
 
     iterator        insertAfter( const iterator& it, const T& element);
     iterator        removeAfter( const iterator& it );
@@ -66,10 +72,13 @@ public:
     inline T&       front()             { return head->data; }
     inline const T& front()     const   { return head->data; }
 
-    inline size_t   getSize()   const   { return size;      }
-    inline bool     isEmpty()   const   { return size == 0; }
+    inline size_t   size()      const   { return currSize;      }
+    inline bool     empty()     const   { return currSize == 0; }
 
     void            print()     const;
+
+    //ForwardList<T>& reverse();
+    //ForwardList<T>& removeDuplicates();
 
 private:
     void copy( const ForwardList<T>& other);
@@ -87,7 +96,7 @@ private:
 private:
     Node* head;
     Node* tail;
-    size_t size;
+    size_t currSize;
 };
 
 } // end namespace dsa
