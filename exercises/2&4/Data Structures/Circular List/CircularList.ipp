@@ -191,13 +191,29 @@ typename CircularList<T>::iterator CircularList<T>::removeAfter( const iterator&
     {
         throw std::logic_error( "empty forward list!" );
     }
-
+    if ( size == 1 )
+    {
+        delete it.m_node_ptr;
+        return nullptr;
+    }
     Node* removed = it.m_node_ptr->pNext;
+    if ( removed == tail )
+    {
+        tail = it.m_node_ptr;
+    }
+    if ( removed == head )
+    {
+        head = head->pNext;
+    }
     it.m_node_ptr->pNext = removed->pNext;
 
     delete removed;
 
     --size;
+    if ( size == 1 )
+    {
+        return head ? head : tail;
+    }
     return it.m_node_ptr->pNext;
 }
 
