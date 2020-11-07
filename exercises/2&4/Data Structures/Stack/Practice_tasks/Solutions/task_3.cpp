@@ -1,77 +1,68 @@
+#include <iostream>
+#include <string>
 #include "TemplateStack.hpp"
 
-const size_t MAX_SIZE_BUFFER = 1024;
-
-bool isDigit( char c )
+inline bool isDigit( char c )
 {
 	return c >= '0' && c <= '9';
 }
 
-
-bool isOperation( char op )
+inline bool isOperation( char op )
 {
 	return op == '+' || op == '-' || op == '*' || op == '/' || op == '^';
 }
 
-int applyBinaryOperation( int first, int second, char op )
+double applyBinaryOperation( double first, double second, char op )
 {
-	int result = 0;
+	double result = 0;
 	switch ( op )
 	{
 		case '+': result = first + second; break;
 		case '-': result = first - second; break;
 		case '*': result = first * second; break;
 		case '/': result = first / second; break;
-		case '^': result = (int)pow( first, second ); break;
+		case '^': result = pow( first, second ); break;
 	}
 	return result;
 }
 
 int main()
 {
-	dsa::TemplateStack<int> numbers;
-	dsa::TemplateStack<char> operations;
+	dsa::TemplateStack<double> calc;
 
-	char buffer[ MAX_SIZE_BUFFER ];
+	std::string input;
+	std::getline( std::cin, input );
 
-	std::cin.getline( buffer, MAX_SIZE_BUFFER );
-
-	size_t i = 0;
-	while ( buffer[ i ] )
+	for ( char currChar : input )
 	{
-		if ( isDigit( buffer[ i ] ) )
+		if ( isDigit( currChar ) )
 		{
-			numbers.push( buffer[ i ] - '0' );
+			calc.push( currChar - '0' );
 		}
-		else if ( isOperation( buffer[ i ] ) )
+		else if ( isOperation( currChar ) )
 		{
-			operations.push( buffer[ i ] );
-			if ( numbers.size() >= 2 )
+			if ( calc.size() >= 2 )
 			{
-				int first = numbers.top();
-				numbers.pop();
-				int second = numbers.top();
-				numbers.pop();
-				numbers.push( applyBinaryOperation( second, first, operations.top() ) );
-				operations.pop();
+				double other = calc.top();
+				calc.pop();
+				double& top = calc.top();
+				top = applyBinaryOperation( top, other, currChar );
 			}
 			else
 			{
-				std::cerr << "Not enough arguments for binary operation '" << buffer[ i ] << "'" << std::endl;
+				std::cerr << "Not enough arguments for binary operation '" << currChar << "'" << std::endl;
 				break;
 			}
 		}
-
-		++i;
 	}
 
-	if ( numbers.size() == 1 && operations.empty() )
+	if ( calc.size() == 1 )
 	{
-		std::cout << numbers.top() << std::endl;
+		std::cout << calc.top() << std::endl;
 	}
 	else
 	{
-		std::cout << "Invalid expretion" << std::endl;
+		std::cout << "Invalid expression" << std::endl;
 	}
 
 	return 0;
