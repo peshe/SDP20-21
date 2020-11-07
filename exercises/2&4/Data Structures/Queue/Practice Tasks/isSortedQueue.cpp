@@ -1,7 +1,14 @@
 #include "TemplateQueue.hpp"
 
-template < typename T>
-bool isSorted( dsa::TemplateQueue<T>&& Q )
+enum class SeqType
+{
+	ASCENDING,
+	DESCENDING,
+	NEITHER
+};
+
+template <typename T>
+bool isSorted( dsa::TemplateQueue<T>& Q )
 {
 	bool success = true;
 
@@ -9,16 +16,21 @@ bool isSorted( dsa::TemplateQueue<T>&& Q )
 	size_t countEl = Q.size();
 
 	Q.pop();
-	bool asc = temp <= Q.front();
+	SeqType seqType = SeqType::NEITHER;
+
 	for ( size_t i = 0; i < countEl - 1; ++i )
 	{
-		if ( asc && temp <= Q.front() )
+		if ( seqType == SeqType::NEITHER )
 		{
-			Q.push( temp );
-			temp = Q.front();
-			Q.pop();
+			if ( temp < Q.front() )
+				seqType = SeqType::ASCENDING;
+			else if ( temp > Q.front() )
+				seqType = SeqType::DESCENDING;
 		}
-		else if ( !asc && temp >= Q.front() )
+
+		if (   ( seqType == SeqType::NEITHER )
+			|| ( seqType == SeqType::ASCENDING && temp <= Q.front() )
+			|| ( seqType == SeqType::DESCENDING && temp >= Q.front() ))
 		{
 			Q.push( temp );
 			temp = Q.front();
@@ -36,6 +48,12 @@ bool isSorted( dsa::TemplateQueue<T>&& Q )
 			break;
 		}
 	}
+
+	if ( success )
+	{
+		Q.push( temp );
+	}
+
 	return success;
 }
 
@@ -44,15 +62,15 @@ int main()
 {
 
 	dsa::TemplateQueue<int> Q;
-	for ( int i = 1; i <= 10; ++i )
+	for ( int i = 0; i < 20; ++i )
 	{
-		Q.push( -i );
+		Q.push( i / 2 );
 	}
-	//Q.push( 10 ); add for unsorted queue
+	// Q.push( -10 ); // uncomment for unsorted queue
 
 	Q.print();
 
-	std::cout << ( isSorted( std::move(Q) ) ? "Yey" : "Ney" ) << std::endl; ;
+	std::cout << ( isSorted( Q ) ? "Yey" : "Ney" ) << std::endl; ;
 	Q.print();
 
 	return 0;

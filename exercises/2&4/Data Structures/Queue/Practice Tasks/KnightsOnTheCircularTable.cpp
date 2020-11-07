@@ -1,46 +1,45 @@
+#include <iostream>
 #include "CircularList.hpp"
 
-
-
-size_t game( dsa::CircularList<int>&& knights )
+class CircularTable
 {
-	dsa::CircularList<int>::iterator currentKnight = knights.begin();
+public:
+	CircularTable( size_t size = 0 )
+	{
+		setKnights( size );
+	}
+
+	void setKnights( size_t count )
+	{
+		this->knights = {};
+		for ( size_t i = 1; i <= count; ++i )
+			knights.push_back( i );
+	}
+
+	size_t doGame();
+
+private:
+	dsa::CircularList<size_t> knights;
+};
+
+size_t CircularTable::doGame()
+{
+	dsa::CircularList<size_t>::iterator currentKnight = knights.begin();
 
 	while ( knights.getSize() != 1 )
 	{
 		currentKnight = knights.removeAfter( currentKnight );
 	}
+
 	return knights.front();
 }
 
-class CircularTable
-{
-public:
-	void setKnights( const dsa::CircularList<int>& knights )
-	{
-		this->knights = knights;
-	}
-	void game();
-private:
-	dsa::CircularList<int> knights;
-};
-
 int main()
 {
+	CircularTable table;
+	table.setKnights( 12 );
 
-	//CircularTable table;
-	dsa::CircularList<int> knights;
-
-	for ( int i = 1; i <= 12; ++i )
-	{
-		knights.push_back( i );
-	}
-	//table.setKnights( knights );
-	//table.game();
-
-
-	std::cout << "Winner is: " << game( std::move( knights ) ) << std::endl;;
-
+	std::cout << "Winner is: " << table.doGame() << std::endl;
 
 	return 0;
 }
