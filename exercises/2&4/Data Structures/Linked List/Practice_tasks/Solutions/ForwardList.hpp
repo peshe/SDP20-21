@@ -77,6 +77,11 @@ public:
 
     void            print()     const;
 
+    /*** Tasks ***/
+    ForwardList<T>& reverse();
+    ForwardList<T>& removeDuplicates();
+    ForwardList<T>& removeRepeated();
+
 private:
     void copy( const ForwardList<T>& other);
     void clean();
@@ -99,3 +104,4 @@ private:
 } // end namespace dsa
 
 #include "ForwardList.ipp"
+#include "ForwardListTasks.ipp"
