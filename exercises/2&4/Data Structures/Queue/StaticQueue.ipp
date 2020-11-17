@@ -60,17 +60,17 @@ inline void StaticQueue<T, CAPACITY>::pop()
 template<typename T, size_t CAPACITY>
 inline T& StaticQueue<T, CAPACITY>::front()
 {
-    if ( this->empty() )
-        throw std::logic_error( "StaticQueue: front of an empty queue!" );
-
-    return fData[ fHeadIndex ];
+    return const_cast< T& >( std::as_const( *this ).front() );
 }
 
 
 template<typename T, size_t CAPACITY>
 inline const T& StaticQueue<T, CAPACITY>::front() const
 {
-    return static_cast<StaticQueue>( this )->front();
+    if ( this->empty() )
+        throw std::logic_error( "StaticQueue: front of an empty queue!" );
+
+    return fData[ fHeadIndex ];
 }
 
 

@@ -81,16 +81,16 @@ bool LinkedStack::pop()
 
 int& LinkedStack::top()
 {
-    if ( this->empty() )
-        throw std::logic_error( "LinkedStack: Can't return top of an empty stack!" );
-
-    return fTop->fData;
+    return const_cast< int& >( std::as_const( *this ).top() );
 }
 
 
 const int& LinkedStack::top() const
 {
-    return const_cast< LinkedStack& >( *this ).top();
+    if ( this->empty() )
+        throw std::logic_error( "LinkedStack: Can't return top of an empty stack!" );
+
+    return fTop->fData;
 }
 
 

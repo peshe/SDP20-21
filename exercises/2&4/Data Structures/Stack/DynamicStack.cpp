@@ -73,16 +73,16 @@ bool DynamicStack::pop()
 
 int& DynamicStack::top()
 {
-    if ( this->empty() )
-        throw std::logic_error( "Can't return top of an empty stack!" );
-
-    return fData[ fSize - 1 ];
+    return const_cast< int& >( std::as_const( *this ).top() );
 }
 
 
 const int& DynamicStack::top() const
 {
-    return const_cast< DynamicStack& >( *this ).top();
+    if ( this->empty() )
+        throw std::logic_error( "Can't return top of an empty stack!" );
+
+    return fData[ fSize - 1 ];
 }
 
 
