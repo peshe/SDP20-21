@@ -34,7 +34,7 @@ public:
     public:
         /* access operators */
         reference       operator*()         { return m_node_ptr->data; }
-        const_reference operator*() const   { return m_node_ptr;  }
+        const_reference operator*() const   { return m_node_ptr->data; }
         pointer         operator->()        { return m_node_ptr;  }
 
         /* compare operators */
