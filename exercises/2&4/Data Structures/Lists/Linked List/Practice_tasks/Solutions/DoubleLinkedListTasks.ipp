@@ -4,6 +4,7 @@ namespace dsa
 {
 
 
+// Task 4
 template<class T>
 inline DoubleLinkedList<T>& DoubleLinkedList<T>::append( DoubleLinkedList<T> other )
 {
@@ -21,6 +22,7 @@ inline DoubleLinkedList<T>& DoubleLinkedList<T>::append( DoubleLinkedList<T> oth
 }
 
 
+// Task 5
 template<class T>
 template<class Pred>
 inline DoubleLinkedList<T>& DoubleLinkedList<T>::divide( const Pred& predicate )
@@ -28,33 +30,41 @@ inline DoubleLinkedList<T>& DoubleLinkedList<T>::divide( const Pred& predicate )
     Node*   curr    = head;
     Node*   prev    = head->pPrev;
     Node*   next    = head->pNext;
-    for ( size_t i = 0; i < this->size; i++ )
+    if ( this->size > 1 )
     {
-        if ( predicate( curr->data ) )
+        for ( size_t i = 0; i < this->size; i++ )
         {
-            // Connect the two nodes beetween curr
-            if ( prev )
-                prev->pNext = next;
-            
-            if ( next )
-                next->pPrev = prev;
-            
-            // Add curr to the end
-            curr->pNext = nullptr;
-            curr->pPrev = tail;
-            tail->pNext = curr;
-            tail        = curr;
+            if ( predicate( curr->data ) )
+            {
+                // Set 'next' as the head if the head is about to be moved to the back
+                if ( head == curr )
+                    head = next;
 
-            // Move the pointers by one except for prev
-            curr    = next;
-            next    = next->pNext;
-        }
-        else
-        {
-            prev    = curr;
-            curr    = next;
-            if ( next )
-                next    = next->pNext;
+                // Connect the two nodes beetween curr
+                if ( prev )
+                    prev->pNext = next;
+
+                if ( next )
+                    next->pPrev = prev;
+
+                // Add curr to the end
+                curr->pNext = nullptr;
+                curr->pPrev = tail;
+                tail->pNext = curr;
+                tail        = curr;
+
+                // Move the pointers by one except for prev
+                curr    = next;
+                if ( next )
+                    next    = next->pNext;
+            }
+            else
+            {
+                prev    = curr;
+                curr    = next;
+                if ( next )
+                    next    = next->pNext;
+            }
         }
     }
 
