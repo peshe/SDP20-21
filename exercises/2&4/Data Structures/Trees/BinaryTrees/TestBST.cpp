@@ -1,6 +1,6 @@
 #include <iostream>
 #include <ctime>
-#include "BST.hpp"
+#include "BinarySearchTree.hpp"
 
 void fillBSTRandomly( dsa::BST<int>& bst, size_t elements = 20, int range = 100 )
 {

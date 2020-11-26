@@ -58,4 +58,4 @@ private:
 
 }
 
-#include "BST.ipp"
+#include "BinarySearchTree.ipp"
