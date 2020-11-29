@@ -35,7 +35,7 @@ public:
         : root(copy(tree.root))
         , size(tree.size) {};
 
-    BST(const BST&& tree)
+    BST(BST&& tree)
         : BST()
     {
         std::swap(root, tree.root);

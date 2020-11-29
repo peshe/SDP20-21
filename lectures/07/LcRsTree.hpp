@@ -30,7 +30,7 @@ public:
         : root(copy(tree.root))
         , size(tree.size) {};
 
-    Tree(const Tree&& tree)
+    Tree(Tree&& tree)
         : Tree()
     {
         std::swap(root, tree.root);
@@ -207,4 +207,4 @@ private:
 } //namespace sdp
 } //namespace fmi
 
-#endif __TREE_HEADER_INCLUDED_
+#endif //__TREE_HEADER_INCLUDED_
