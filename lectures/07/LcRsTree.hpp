@@ -1,11 +1,11 @@
-/***************************************************************
-*  Пример към курса по структури от данни, ФМИ 2020/2021
+/******************************************************************
+*  Sample code to the course "Data Structures And Algorithms", FMI
 *
-* Прост клас, представящ общо дърво
-* с представяне Ляв син - Десен брат.
+* An educational class, representing generic tree data structure.
+* The connection scheme is Left-child / Right sibling
 *
-* Петър Армянов, 2020
-***************************************************************/
+* (cc) Petar Armyanov, FMI, 2020
+*******************************************************************/
 
 #pragma once
 
@@ -156,21 +156,21 @@ private:
 
     bool insert(node*& root, const DataType& key, const int* path)
     {
-        //Закача като брат на корена
+        //Connect the new element as a sibling of the root
         if (path[0] < 0) {
             root = new node(key, nullptr, root);
             return true;
         }
 
-        // Няма наследник -> грешен път?
+        // No child -> invalid path?
         if (!root) return false;
 
-        // Закача някъде в наследниците на корена
+        // Recursively connect among the children
         if (path[0] == 0) {
             return insert(root->child, key, path + 1);
         }
 
-        // Намира подходящ наследник в братството
+        // Find the proper node among the brothers
         node* it = root;
         int pos = path[0];
         while (it->brother && pos > 0) {
