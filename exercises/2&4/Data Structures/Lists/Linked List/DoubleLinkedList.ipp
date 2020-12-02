@@ -1,3 +1,8 @@
+//
+// Created by Yasen Aleksiev on 25/10/20.
+// Edited by Aleksandar Dimitrov
+//
+
 #include "DoubleLinkedList.hpp"
 
 namespace dsa {
@@ -137,11 +142,24 @@ void DoubleLinkedList<T>::clean()
 template<class T>
 void DoubleLinkedList<T>::print() const
 {
-    Node* ptr = head;
-    while ( ptr != nullptr )
+    if ( size == 0 )
     {
-        std::cout << ptr->data << ' ';
-        ptr = ptr->pNext;
+        std::cout << "[]" << std::endl;
+    }
+    else if ( size == 1 )
+    {
+        std::cout << "[ " << head->data << " ]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[ ";
+        Node* ptr = head;
+        while ( ptr->pNext != nullptr )
+        {
+            std::cout << ptr->data << " <-> ";
+            ptr = ptr->pNext;
+        }
+        std::cout << ptr->data << " ]" << std::endl;
     }
     std::cout << std::endl;
 }
@@ -150,7 +168,9 @@ void DoubleLinkedList<T>::print() const
 template<class T>
 void DoubleLinkedList<T>::push_front( const T& newData )
 {
-    head = new Node( newData, head );
+    Node* newNode = new Node( newData, head );
+    head->prev = newNode;
+    head = newNode;
     if ( size == 0 )
     {
         tail = head;
