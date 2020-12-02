@@ -19,6 +19,14 @@ void printList(Node* head) {
     }
 }
  
+void deleteList(Node* head) {
+    while(head) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+
 Node* split(Node* list, Node* position) {
     if(list == nullptr) {
         return nullptr;
