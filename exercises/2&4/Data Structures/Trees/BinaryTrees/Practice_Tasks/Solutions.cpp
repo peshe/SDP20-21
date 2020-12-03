@@ -330,10 +330,38 @@ void testBTWithStudents()
 	std::cout << "\n\nEND TEST FOR THE BINARY TREE WITH STUDENTS\n\n";
 }
 
+template <typename T>
+BTNode<T>* sortedArrayToBST( T arr[], int start, int end )
+{
+	if ( start > end )
+	{
+		return nullptr;
+	}
+
+	int mid = ( start + end ) / 2;
+	BTNode<T>* root = new BTNode<T>( arr[ mid ] );
+
+	root->fLeftNode = sortedArrayToBST( arr, start, mid - 1 );
+	
+	root->fRightNode = sortedArrayToBST( arr, mid + 1, end );
+
+	return root;
+}
+
+
 int main()
 {
-	testBTWithNumbers();
-	testBTWithStudents();
+	//testBTWithNumbers();
+	//testBTWithStudents();
+
+
+	int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+	int n = sizeof(arr) / sizeof(arr[0]);  
+
+	/* Convert List to BST */
+	BTNode<int>* root = sortedArrayToBST<int>( arr, 0, n - 1 );
+
+	printBinaryLDK( root );
 
 	return 0;
 }
