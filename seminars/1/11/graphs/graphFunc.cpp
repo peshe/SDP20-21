@@ -82,6 +82,8 @@ int main() {
 
     G.V[8].E.push_back(5);
 
+    printDFS(G, 5);
+    cout<< endl;
     printBFS(G, 5);
 
     return 0;
