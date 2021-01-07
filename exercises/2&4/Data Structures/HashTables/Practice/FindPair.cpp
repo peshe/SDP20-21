@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm> // std::sort
-#include <unordered_map>
+#include <unordered_set>
 
 // Naive method to find a pair in an array with a given sum
 // Time complexity: O(n^2)
@@ -67,29 +67,25 @@ void findPair2( std::vector<int> arr, size_t n, int sum )
 // Space complexity: O(n)
 void findPair3( const std::vector<int>& arr, size_t n, int sum )
 {
-    // create an empty map
-    // the key: is actual value in array
-    // the value: is index in the array
-    std::unordered_map<int, int> map;
+    // create an empty set
+    // the key is actual value in array
+    std::unordered_set<int> set;
 
     // do for each element
     for ( size_t i = 0; i < n; i++ )
     {
-        // check if pair (arr[i], sum-arr[i]) exists
+        std::unordered_set<int>::iterator it = set.find( sum - arr[ i ] );
 
-        // if the difference is seen before, print the pair
-        if ( map.find( sum - arr[ i ] ) != map.end() )
+        // check if sum-arr[i] exists
+        if ( it != set.end() )
         {
-            std::cout << "Pair found at index " << map[ sum - arr[ i ] ] <<
-                " and " << i;
+            // if the difference is seen before, print the pair
+            std::cout << "Pair found " << *it << " + " << arr[ i ];
             return;
         }
 
-        // store index of the current element in the map
-        map[ arr[ i ] ] = i;
-        // map[ 8 ] = 0;
-        // map[ 7 ] = 1;
-
+        // store actual value of the current element in the set
+        set.insert( arr[ i ] );
     }
 
     // we reach here if pair is not found
@@ -100,7 +96,7 @@ void findPair3( const std::vector<int>& arr, size_t n, int sum )
 int main()
 {
     std::vector<int> arr = { 8, 7, 2, 5, 9, 3, 1 };
-    int sum = 10;
+    int sum = 11;
 
     findPair1(arr, arr.size(), sum);
     findPair2(arr, arr.size(), sum);

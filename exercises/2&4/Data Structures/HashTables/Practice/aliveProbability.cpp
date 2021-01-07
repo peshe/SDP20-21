@@ -23,6 +23,7 @@ double aliveProbability( int x, int y, int steps_left, unordered_map<string, dou
     // calculate unique map key from current coordinates(x, y) of person
     // and number of steps(n) left
     string key = to_string( x ) + "|" + to_string( y ) + "|" + to_string( steps_left );
+    //"0|0|4" -> [0;1]
 
     // if sub-problem is seen for the first time
     if ( dp.find( key ) == dp.end() )
@@ -96,7 +97,29 @@ namespace std
     };
 }
 
-double aliveProbability( int x, int y, int n, unordered_map<Cell, double>& dp )
+struct Cell1
+{
+    int x, y, n;
+
+    bool operator==( const Cell& rhs )
+    {
+        return x == rhs.x && y == rhs.y && n == rhs.n;
+    }
+
+    struct Hash
+    {
+        size_t operator()( const Cell& cell ) const noexcept
+        {
+            std::hash<int> XHash;
+            std::size_t h1 = XHash( cell.x );
+            std::size_t h2 = std::hash<int> {}( cell.y );
+            std::size_t h3 = std::hash<int> {}( cell.n );
+            return h1 ^ ( h2 << 1 ) ^ ( h3 << 2 ); // or use boost::hash_combine
+        }
+    };
+};
+
+double aliveProbability( int x, int y, int n, unordered_map<Cell1, double, Cell1::Hash>& dp )
 {
     // base case
     if ( n == 0 )
@@ -104,7 +127,7 @@ double aliveProbability( int x, int y, int n, unordered_map<Cell, double>& dp )
 
     // calculate unique map key from current coordinates(x, y) of person
     // and number of steps(n) left
-    Cell key = { x, y, n };
+    Cell1 key = { x, y, n };
 
     // if sub-problem is seen for the first time
     if ( dp.find( key ) == dp.end() )
@@ -140,8 +163,8 @@ int main()
 
     // map to store solution to already computed sub-problems
     //unordered_map<string, double> dp; // with key 'string'
-    //unordered_map<Cell, double, MyHash> dp; // with key 'Cell' and hash function MyHash
-    unordered_map<Cell, double> dp; // with key 'Cell' and hash function that is injected in namespace std 
+    unordered_map<Cell1, double, Cell1::Hash> dp; // with key 'Cell1' and hash function Cell1::Hash
+    //unordered_map<Cell, double> dp; // with key 'Cell' and hash function that is injected in namespace std 
 
     // calculate alive Probability
     cout << "Alive probability is " << aliveProbability(x, y, n, dp);

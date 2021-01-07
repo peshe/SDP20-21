@@ -36,10 +36,10 @@ int main()
     }
 
     std::cout << std::endl;
-
-    if ( myUnorderedMap.find( 6 ) != myUnorderedMap.end() )
+    unordered_map<const int, char>::iterator it = myUnorderedMap.find( 6 );
+    if ( it != myUnorderedMap.end() )
     {
-        myUnorderedMap[ 6 ] = 'Y';
+        it->second = 'Y';
     }
     for ( std::pair<const int, char> it : myUnorderedMap )
     {

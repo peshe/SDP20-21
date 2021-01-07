@@ -14,6 +14,7 @@ string constructStringPair( int x, int y )
 {
     return "{" + to_string( x ) + ", " + to_string( y ) + "}";
 }
+//"{x, y}"
 
 // Function to find all pairs that are mirror of each other
 // Time complexity: O(n)
@@ -27,7 +28,7 @@ void findPairs( const std::vector<Pair>& pairs )
     for ( const Pair& p_iter : pairs )
     {
         // construct a pair (x, y) from pairs[i]
-        string p = constructStringPair( p_iter.x, p_iter.y );
+        string p = constructStringPair( p_iter.x, p_iter.y ); //"{x, y}"
 
         // insert current pair into the set
         set.insert( p );
