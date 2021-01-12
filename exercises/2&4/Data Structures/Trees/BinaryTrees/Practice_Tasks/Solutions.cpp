@@ -121,7 +121,7 @@ void deleteTree( BTNode<T>*& root )
 }
 
 
-template <typename T, typename Comparator = std::less<> >
+template <typename T, typename Comparator = std::less<T> >
 bool isValidBST( const BTNode<T>* root, Comparator comp = Comparator() )
 {
 	if ( !root )
@@ -129,17 +129,26 @@ bool isValidBST( const BTNode<T>* root, Comparator comp = Comparator() )
 		return true;
 	}
 
+	/* false if left is > than node */
 	if ( root->fLeftNode && !comp( root->fLeftNode->fData, root->fData ) ) // A -> B <=> (A && !B) 
 	{
 		return false;
 	}
 
+	/* false if right is < than node */
 	if ( root->fRightNode && !comp( root->fData, root->fRightNode->fData ) ) // A -> B <=> (A && !B) 
 	{
 		return false;
 	}
 
-	return isValidBST( root->fLeftNode ) && isValidBST( root->fRightNode );
+	/* false if, recursively, the left or right is not a BST */
+	if ( !isValidBST( root->fLeftNode ) || !isValidBST( root->fRightNode ) )
+	{
+		return false;
+	}
+
+	/* passing all that, it's a BST */
+	return true;
 }
 
 
