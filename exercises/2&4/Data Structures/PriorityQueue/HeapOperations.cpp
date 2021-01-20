@@ -6,7 +6,9 @@ template <typename T>
 void print( const std::string& text, const std::vector<int>& v = {} )
 {
 	std::cout << text << ": ";
-	for ( const auto& e : v ) std::cout << e << ' ';
+	for ( const int& elem : v ) 
+		std::cout << elem << ' ';
+
 	std::cout << '\n';
 }
 
@@ -40,11 +42,12 @@ void push( std::vector<T>& v, const T& el)
 
 	// check if node at index i and its parent violates 
 	// the heap property
-	while ( index != 0 && v[ get_parent_ind( index ) ] < v[ index ] )
+	while ( index != 0 && v[ index ] > v[ get_parent_ind( index ) ] )
 	{
 		// swap the two if heap property is violated
 		std::swap( v[ index ], v[ get_parent_ind( index ) ] );
 
+		print<int>( "After push", v );
 		// call Heapify-up on the parent
 		index = get_parent_ind( index );
 	}
@@ -61,15 +64,15 @@ void pop( std::vector<T>& v )
 	// sift until wanted position is reached
 	while ( index < (size - 1) / 2 )
 	{
-		size_t left = get_left_child_ind( index );
-		size_t right = get_right_child_ind( index );
+		int left = get_left_child_ind( index );
+		int right = get_right_child_ind( index );
 
 		int largest  = index;
 		// compare v[index] with its left and right child and find largest/smallest value
-		if ( left < size && v[ left ] < v[ largest  ] )
+		if ( left < size && v[ left ] > v[ largest  ] )
 			largest  = left;
 
-		if ( right < size && v[ right ] < v[ largest  ] )
+		if ( right < size && v[ right ] > v[ largest  ] )
 			largest  = right;
 
 		// go down one level more 

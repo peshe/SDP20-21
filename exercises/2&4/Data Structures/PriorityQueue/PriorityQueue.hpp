@@ -3,7 +3,7 @@
 
 namespace dsa
 {
-	template< typename T, typename Allocator = std::vector<T>, typename Comparator = std::less<T> >
+	template< typename T, typename Container = std::vector<T>, typename Comparator = std::less<T> >
 	class PriorityQueue
 	{
 	public:
@@ -27,7 +27,7 @@ namespace dsa
 
 
 	private:
-		Allocator	fData;
+		Container	fData;
 		Comparator	fCmp;
 
 	private:
@@ -40,36 +40,36 @@ namespace dsa
 	};
 
 
-	template<typename T, typename Allocator, typename Comparator>
+	template<typename T, typename Container, typename Comparator>
 	inline
-		PriorityQueue<T, Allocator, Comparator>::PriorityQueue( const Comparator& cmp ): fCmp( cmp )
+		PriorityQueue<T, Container, Comparator>::PriorityQueue( const Comparator& cmp ): fCmp( cmp )
 	{
 	}
 
 
-	template<typename T, typename Allocator, typename Comparator>
+	template<typename T, typename Container, typename Comparator>
 	inline
-		size_t PriorityQueue<T, Allocator, Comparator>::get_left_child_ind( size_t index ) const
+		size_t PriorityQueue<T, Container, Comparator>::get_left_child_ind( size_t index ) const
 	{
 		return index * 2 + 1;
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
+	template<typename T, typename Container, typename Comparator>
 	inline
-		size_t PriorityQueue<T, Allocator, Comparator>::get_right_child_ind( size_t index ) const
+		size_t PriorityQueue<T, Container, Comparator>::get_right_child_ind( size_t index ) const
 	{
 		return index * 2 + 2;
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
+	template<typename T, typename Container, typename Comparator>
 	inline
-		int PriorityQueue<T, Allocator, Comparator>::get_parent_ind( size_t index ) const
+		int PriorityQueue<T, Container, Comparator>::get_parent_ind( size_t index ) const
 	{
 		return ( index ) ? ( index - 1 ) / 2 : -1;
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
-	inline void PriorityQueue<T, Allocator, Comparator>::sift_down( size_t index )
+	template<typename T, typename Container, typename Comparator>
+	inline void PriorityQueue<T, Container, Comparator>::sift_down( size_t index )
 	{
 		// get left and right child of node at index index
 		int left = get_left_child_ind( index );
@@ -92,8 +92,8 @@ namespace dsa
 		}
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
-	inline void PriorityQueue<T, Allocator, Comparator>::sift_up( size_t index )
+	template<typename T, typename Container, typename Comparator>
+	inline void PriorityQueue<T, Container, Comparator>::sift_up( size_t index )
 	{
 		// check if node at fData[index] and its parent violates 
 		// the heap property
@@ -107,35 +107,35 @@ namespace dsa
 		}
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
-	const T& PriorityQueue<T, Allocator, Comparator>::top() const {
+	template<typename T, typename Container, typename Comparator>
+	const T& PriorityQueue<T, Container, Comparator>::top() const {
 
 		return fData.front();
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
-	void PriorityQueue<T, Allocator, Comparator>::push(const T& el) {
+	template<typename T, typename Container, typename Comparator>
+	void PriorityQueue<T, Container, Comparator>::push(const T& el) {
 
 		fData.push_back(el);
 		sift_up(fData.size() - 1);
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
-	void PriorityQueue<T, Allocator, Comparator>::pop() {
+	template<typename T, typename Container, typename Comparator>
+	void PriorityQueue<T, Container, Comparator>::pop() {
 
 		std::swap(fData.front(), fData.back());
 		fData.pop_back();
 		sift_down(0);
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
-	inline bool PriorityQueue<T, Allocator, Comparator>::empty() const {
+	template<typename T, typename Container, typename Comparator>
+	inline bool PriorityQueue<T, Container, Comparator>::empty() const {
 
 		return fData.empty();
 	}
 
-	template<typename T, typename Allocator, typename Comparator>
-	inline size_t PriorityQueue<T, Allocator, Comparator>::size() const {
+	template<typename T, typename Container, typename Comparator>
+	inline size_t PriorityQueue<T, Container, Comparator>::size() const {
 
 		return fData.size();
 	}

@@ -37,7 +37,7 @@ int* merge(int* arr1, int s1, int* arr2, int s2, int* result) {
         result[i] = temp[i];
     }
 
-    delete temp;
+    delete [] temp;
 
     return result;
 }
