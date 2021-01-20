@@ -9,7 +9,7 @@ struct Node
 	std::string				word;
 	std::vector< Node* >	children;
 
-	Node( const std::string& _word = "" ) : word(_word) { }
+	Node( const std::string& _word = "" ) : word( _word ) { }
 };
 
 void insertChildOnTheRightPlace( const std::string& currentChild, std::vector<Node*>& currentLine, std::vector< Node* >& lastLine, size_t& parentIndex )
