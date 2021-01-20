@@ -67,7 +67,7 @@ Node* init( const std::string& fileName )
 
 void printSent( Node* root, int depth, int& maxRight )
 {
-	if ( !root)
+	if ( !root )
 	{
 		return;
 	}
